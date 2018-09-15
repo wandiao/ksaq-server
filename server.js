@@ -13,8 +13,12 @@ const options = {
     cert: fs.readFileSync('./ssl/server.pem')  //ssl文件路径
 };
 
+let data = null;
+setInterval(() => {
+  data =  fs.readFileSync('/diao/AliServer/test.txt', 'utf-8');
+})
+
 app.use(async ctx => {
-  const data = fs.readFileSync('/diao/AliServer/test.txt', 'utf-8');
   ctx.body = data;
 });
 
