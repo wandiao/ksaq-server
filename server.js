@@ -16,7 +16,7 @@ const options = {
 let data = null;
 setInterval(() => {
   data =  fs.readFileSync('/diao/AliServer/test.txt', 'utf-8');
-})
+}, 1000)
 
 app.use(async ctx => {
   ctx.body = data;
