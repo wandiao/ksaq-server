@@ -8,15 +8,17 @@ const session = require('koa-generic-session');
 const redisStore = require('koa-redis');
 const redis = require('redis');
 
+const moment = require('moment');
 
 const app = new Koa();
 const client = redis.createClient(6379, "127.0.0.1");
 
-app.use(session({
-  store: redisStore({
+app.keys = ['keys', 'keykeys'];
+const store = redisStore({
     client,
-    db:1,
-  })
+})
+app.use(session({
+  store,
 }));
 
 app.use(enforceHttps());
@@ -27,10 +29,10 @@ const options = {
 };
 
 app.use(async ctx => {
-  const session = this.session;
-  session.count = session.count || 0;
-  session.count++;
-  this.body = session.count;
+  const time = moment().format('HHmmss');
+  console.log(time);
+  const data = await store.client.get(time);
+  ctx.body = data;
 
 });
 
